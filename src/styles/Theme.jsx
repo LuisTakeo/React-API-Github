@@ -49,6 +49,8 @@ export const theme = {
   fontSize: {
     small: '.8rem',
     normal: '1rem',
+    title: '1.3rem',
+    subititle: '1.25rem',
   },
   breakpoints: {
     xs: '0',
