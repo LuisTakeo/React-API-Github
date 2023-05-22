@@ -49,6 +49,7 @@ export const theme = {
   fontSize: {
     small: '.8rem',
     normal: '1rem',
+    large: '1.2rem',
     title: '1.3rem',
     subititle: '1.25rem',
   },

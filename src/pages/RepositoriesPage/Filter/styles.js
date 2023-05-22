@@ -28,7 +28,7 @@ export const Selector = styled.button`
   padding: 0 1rem;
 
   &:hover,
-  &:selected {
+  &.selected {
     background: ${(props) => props.color || props.theme.colors.gray400};
     color: ${(props) =>
       props.color ? props.theme.colors.white : props.theme.colors.black};
@@ -37,7 +37,7 @@ export const Selector = styled.button`
   @media screen and (max-width: ${(props) => props.theme.breakpoints.md}) {
     border-radius: 20px;
     &:hover,
-    &:selected {
+    &.selected {
       transform: translateX(0) scale(1.02);
     }
   }

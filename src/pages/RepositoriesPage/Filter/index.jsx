@@ -1,19 +1,17 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import { Container, Selector, Cleaner } from './styles';
 
-function Filter() {
+function Filter({ languages, currentLanguage, onClick }) {
 
-  const langs = [
-    {name: 'Javascript', count: 5, color: '#f1c40f'},
-    {name: 'Java', count: 7 , color: '#85a5a6'},
-    {name: 'Python', count: 5, color: '#3498db'},
-  ];
 
-  const selectors = langs.map(({name, count, color}) => (
+  const selectors = languages.map(({name, count, color}) => (
     <Selector
       key={name.toLowerCase()}
-      color={color}>
+      color={color}
+      className={currentLanguage === name ? 'selected' : ''}
+      onClick={() => onClick && onClick(name)}
+      >
       <span>{name}</span>
       <span>{count}</span>
     </Selector>
@@ -22,9 +20,29 @@ function Filter() {
   return (
     <Container>
       {selectors}
-      <Cleaner>Limpar</Cleaner>
+      <Cleaner onClick={() => onClick && onClick(undefined)
+      }>Limpar</Cleaner>
     </Container>
   )
 }
+
+// default props define valores padrões, proptypes define quais tipos de dados
+// estão sendo aguardados para ser recebidos
+Filter.defaultProps = {
+  currentLanguage: null,
+  onClick: null,
+};
+
+Filter.propTypes = {
+  languages: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      count: PropTypes.number.isRequired,
+      color: PropTypes.string,
+    }).isRequired,
+  ).isRequired,
+  currentLanguage: PropTypes.string,
+  onClick: PropTypes.func,
+};
 
 export default Filter;
