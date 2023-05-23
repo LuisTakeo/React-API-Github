@@ -1,65 +1,53 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState } from 'react';
+
+import { useParams } from 'react-router-dom';
 
 import Profile from './Profile';
 import Filter from './Filter';
 
-import { Container, Main, SideBar } from './styles';
+import { Loading, Container, Main, SideBar } from './styles';
 import Repositories from './Repositories';
-import { getLangsFrom } from '../../services/api';
+import { getUser, getRepos, getLangsFrom } from '../../services/api';
 
 
 // eslint-disable-next-line react/function-component-definition
 const RepositoriesPage = () => {
 
+  const { login } = useParams();
+
+  const [user, setUser] = useState();
+  const [repositories, setRepositories] = useState();
+  const [languages, setLanguages] = useState();
   const [currentLanguage, setCurrentLanguage] = useState();
+  const [loading, setLoading] = useState(true);
 
-  const user = {
-    login: "LuisTakeo",
-    name: "Takeo",
-    avatar_url: "https://avatars.githubusercontent.com/u/110575504?v=4",
-    followers: 9,
-    following: 24,
-    company: null,
-    blog: "https://www.linkedin.com/in/luis-henrique-takeo-paim-yuahasi-84986a180/",
-    location: "São Paulo - SP - Brazil",
-  };
+  useEffect(() => {
+    const loadData = async() => {
+      const [userResponse, repositoriesResponse] = await Promise.all([
+        getUser(login),
+        getRepos(login)
+      ]);
 
-  const repositories = [
-    { id: '1',
-      name: 'repo1',
-      description: 'descrição',
-      html_url: 'https://github.com/LuisTakeo',
-      language: 'Javascript',
-    },
-    { id: '2',
-      name: 'repo2',
-      description: 'descrição',
-      html_url: 'https://github.com/LuisTakeo',
-      language: 'Java',
-    },
-    { id: '3',
-      name: 'repo3',
-      description: 'descrição',
-      html_url: 'https://github.com/LuisTakeo',
-      language: 'Python',
-    },
-    { id: '4',
-      name: 'repo4',
-      description: 'descrição',
-      html_url: 'https://github.com/LuisTakeo',
-      language: 'Typescript',
-    },
-    { id: '5',
-      name: 'repo5',
-      description: 'descrição',
-      html_url: 'https://github.com/LuisTakeo',
-      language: 'Javascript',
-    },
-  ];
-  const languages = getLangsFrom(repositories);
+      setUser(userResponse.data);
+      setRepositories(repositoriesResponse.data);
+
+      setLanguages(getLangsFrom(repositoriesResponse.data));
+
+      setLoading(false);
+    };
+
+    loadData();
+  }, []);
+
+
+
 
   const onFilterClick = (language) => {
     setCurrentLanguage(language);
+  };
+
+  if(loading){
+    return <Loading>Carregando...</Loading>
   }
 
   return (

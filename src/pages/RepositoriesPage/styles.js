@@ -1,5 +1,12 @@
 import styled from "styled-components";
 
+export const Loading = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center:
+  min-height: 100vh;
+`;
+
 export const Container = styled.main`
   display: flex;
   min-height: 100vh;
@@ -19,7 +26,7 @@ export const SideBar = styled.aside`
 export const Main = styled.section`
   background: ${(props) => props.theme.colors.container};
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   overflow-y: hidden;
   padding: 40px;
 
